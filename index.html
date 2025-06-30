@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual Operacional - Panorama Rent a Car</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cor-verde-panorama: #006442;
+            --cor-verde-escuro: #004d33;
+            --cor-amarelo-panorama: #facc15;
+            --cor-fundo: #fdfdfd;
+            --cor-texto: #333;
+            --cor-cinza-claro: #f8f9fa;
+            --cor-branco: #ffffff;
+            --sombra-card: 0 10px 25px rgba(0, 0, 0, 0.07);
+            --sombra-hover: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--cor-fundo);
+            color: var(--cor-texto);
+            margin: 0;
+            padding: 0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .landing-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, var(--cor-verde-panorama), var(--cor-verde-escuro));
+            color: var(--cor-branco);
+            text-align: center;
+            padding: 20px;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        .landing-page img {
+            width: 400px;
+            max-width: 80%;
+            margin-bottom: 30px;
+        }
+
+        .landing-page h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            margin: 0;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .landing-page p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-top: 15px;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .navigation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .nav-card {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--cor-amarelo-panorama);
+            padding: 30px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--cor-branco);
+            transition: all 0.3s ease-in-out;
+            backdrop-filter: blur(5px);
+            cursor: pointer;
+        }
+
+        .nav-card:hover {
+            background: var(--cor-amarelo-panorama);
+            color: var(--cor-verde-escuro);
+            transform: translateY(-10px);
+            border-color: var(--cor-branco);
+        }
+
+        .nav-card h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .content-section {
+            padding: 60px 20px;
+            display: none; /* Manuais ocultos por padrão */
+            animation: fadeIn 0.8s ease-in-out;
+            background-color: var(--cor-fundo);
+        }
+        
+        .content-section.gray-bg {
+             background-color: var(--cor-cinza-claro);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .titulo-secao {
+            text-align: center;
+            color: var(--cor-verde-panorama);
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            margin-bottom: 40px;
+        }
+
+        .flowchart {
+            display: grid;
+            gap: 30px;
+        }
+
+        .phase {
+            background: var(--cor-branco);
+            border-radius: 12px;
+            box-shadow: var(--sombra-card);
+            border-left: 10px solid var(--cor-verde-panorama);
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .phase-header {
+            padding: 20px 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .phase:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--sombra-hover);
+            border-left-color: var(--cor-amarelo-panorama);
+        }
+
+        .phase-header h3 {
+            margin: 0;
+            color: var(--cor-verde-panorama);
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .phase-header h3 .icon {
+            margin-right: 15px;
+            font-size: 1.8rem;
+            color: var(--cor-amarelo-panorama);
+        }
+        
+        .toggle-icon {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--cor-verde-panorama);
+            transition: transform 0.3s ease;
+        }
+        
+        .phase.active .toggle-icon {
+            transform: rotate(45deg);
+            color: var(--cor-amarelo-panorama);
+        }
+        
+        .details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, padding 0.5s ease-out;
+            padding: 0 30px;
+        }
+
+        .phase.active .details {
+            max-height: 2000px;
+            padding: 0 30px 30px 30px;
+        }
+        
+        .details-content {
+            border-top: 1px solid #e9ecef;
+            padding-top: 20px;
+        }
+
+        .details p.objetivo {
+            font-weight: 600;
+            color: var(--cor-verde-panorama);
+            margin-top: 0;
+            font-style: italic;
+        }
+
+        .details ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .details ul li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+
+        .details ul li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--cor-amarelo-panorama);
+            font-weight: bold;
+        }
+        
+        .sub-processo {
+            margin-top: 20px;
+            border-left: 3px solid var(--cor-amarelo-panorama);
+            padding-left: 20px;
+        }
+
+        .sub-processo h4 {
+            margin-top: 0;
+            color: var(--cor-verde-panorama);
+            display: flex;
+            align-items: center;
+        }
+        
+        .sub-processo h4 .icon {
+             margin-right: 8px;
+        }
+
+        .retornar-container {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .btn-retornar {
+            display: inline-block;
+            background-color: var(--cor-verde-panorama);
+            color: var(--cor-branco);
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid var(--cor-verde-panorama);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+
+        .btn-retornar:hover {
+            background-color: var(--cor-amarelo-panorama);
+            color: var(--cor-verde-escuro);
+            border-color: var(--cor-amarelo-panorama);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+    </style>
+</head>
+<body>
+
+    <main class="landing-page" id="home">
+        <img src="Panorama-LOGO.png" alt="Logo Panorama Rent a Car">
+        <h1>Manual de Procedimentos Operacionais Panorama</h1>
+        <p>Este material foi criado para facilitar a rotina operacional e unificar os padrões de excelência dos profissionais que compõem a equipe Panorama Rent a Car.</p>
+        <nav class="navigation-grid">
+            <div onclick="requestPassword('supervisor')" class="nav-card"><h2>Supervisor</h2></div>
+            <div onclick="requestPassword('agente-locacao')" class="nav-card"><h2>Agente de Locação</h2></div>
+            <div onclick="requestPassword('assistente-financeiro')" class="nav-card"><h2>Assistente Financeiro</h2></div>
+            <div onclick="requestPassword('agente-servico')" class="nav-card"><h2>Agente de Serviço</h2></div>
+        </nav>
+    </main>
+    
+    <section id="supervisor" class="content-section gray-bg">
+        <div class="container">
+            <h1 class="titulo-secao">Manual do Supervisor</h1>
+            <div class="flowchart">
+                <div class="phase">
+                    <div class="phase-header" onclick="toggleDetails(this)">
+                        <h3><span class="icon">📈</span>Fase 1: Início do Dia - Planejamento Estratégico e Alinhamento Comercial</h3>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="details">
+                        <div class="details-content">
+                            <p class="objetivo">Este é o momento de alinhar a equipe, analisar dados e definir as metas de vendas para o dia.</p>
+                            <ul>
+                                <li><strong>Reunião de Alinhamento com Setor Comercial:</strong> (Prioridade Máxima) Realizar uma reunião com os Agentes de Locação. Pauta: Rever metas, analisar o funil de vendas (Leads do sistema), discutir as promoções ativas e traçar estratégias para converter reservas. Motivar a equipe para os desafios do dia.</li>
+                                <li><strong>Alinhamento com a Operação:</strong> Trocar informações com os Agentes de Locação e o Agente de Serviço. Pauta: Verificar a frota disponível e em manutenção, confirmar as retiradas e devoluções mais importantes do dia e antecipar possíveis gargalos operacionais que possam impactar as vendas.</li>
+                                <li><strong>Análise e Liberação do Movimento do Dia Anterior:</strong> Conferir o fechamento do movimento (caixa e contratos) do dia anterior. Objetivo: Validar a precisão dos dados financeiros, identificar tendências de vendas, analisar o ticket médio e liberar as informações para o setor Administrativo.</li>
+                                <li><strong>Análise de Relatórios Gerenciais:</strong> Analisar os relatórios de Vendas, Ocupação da Frota e Manutenções. Comparar os resultados de "produção X objetivos" e identificar desvios ou oportunidades.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="phase">
+                    <div class="phase-header" onclick="toggleDetails(this)">
+                        <h3><span class="icon">🚀</span>Fase 2: Manhã – Gestão Ativa de Vendas e Operações</h3>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="details">
+                        <div class="details-content">
+                             <p class="objetivo">Foco total em dar suporte à equipe de vendas e resolver problemas que impactam o cliente e o resultado.</p>
+                            <ul>
+                                <li><strong>Suporte Direto à Equipe de Vendas:</strong> Atuar como ponto de apoio para os Agentes de Locação. Ações: Aprovar análises de crédito mais complexas ou de maior risco, autorizar condições comerciais especiais e auxiliar em negociações com clientes estratégicos (PF ou PJ).</li>
+                                <li><strong>Resolução de Problemas:</strong> Ser a linha de frente na resolução de problemas complexos que a equipe não conseguiu solucionar. Exemplos: Reclamações de clientes, disputas contratuais, falhas inesperadas em veículos. A agenda deve priorizar a resolução do maior para o menor problema.</li>
+                                <li><strong>Gestão de Pendências Gerais:</strong> Analisar e tomar providências sobre as pendências gerais da locadora, como contratos em atraso (OVER DUE) identificados pelo Agente de Locação, e definir a ação a ser tomada (cobrança, jurídica, etc.).</li>
+                                <li><strong>Orientação e Feedback Contínuo:</strong> Fornecer orientação constante à equipe, garantindo que todos estejam alinhados com os objetivos e padrões de atendimento da empresa. Oferecer feedbacks pontuais sobre o desempenho de vendas.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="phase">
+                    <div class="phase-header" onclick="toggleDetails(this)">
+                        <h3><span class="icon">🤝</span>Fase 3: Tarde - Desenvolvimento de Negócios e Gestão Interdepartamental</h3>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="details">
+                        <div class="details-content">
+                            <p class="objetivo">O foco se desloca da operação diária para a construção de relacionamentos e a garantia de recursos para o futuro.</p>
+                            <ul>
+                                <li><strong>Desenvolvimento Comercial (Prospecção):</strong> (Prioridade Comercial) Dedicar tempo para ações de crescimento. Ações: Entrar em contato com leads de Pessoa Jurídica (PJ), agendar reuniões com potenciais clientes corporativos, gerenciar o relacionamento com fornecedores estratégicos e parceiros.</li>
+                                <li><strong>Alinhamento com Manutenção e Administração:</strong> Realizar reuniões ou trocas de informação com os responsáveis pelos outros setores. Objetivo: Discutir prazos de liberação de veículos da manutenção, necessidades de compras, e subsidiar o setor Administrativo com informações da operação para garantir a fluidez dos processos.</li>
+                                <li><strong>Análise de Marketing e Visibilidade:</strong> Interagir com a equipe de marketing. Pauta: Analisar o desempenho das campanhas nas redes sociais, propor novas estratégias de marketing direcionadas e avaliar a necessidade de novas promoções para impulsionar as vendas.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="phase">
+                    <div class="phase-header" onclick="toggleDetails(this)">
+                        <h3><span class="icon">📊</span>Fase 4: Final do Dia - Consolidação de Resultados e Planejamento</h3>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="details">
+                        <div class="details-content">
+                            <p class="objetivo">Momento de consolidar os resultados do dia, preparar a equipe para o dia seguinte e reportar à gestão.</p>
+                            <ul>
+                                <li><strong>Consolidar Resultados do Dia:</strong> Reunir-se brevemente com a equipe de vendas para um balanço do dia: metas atingidas, principais dificuldades e vitórias.</li>
+                                <li><strong>Verificação e Programação do Dia Seguinte:</strong> Analisar as reservas e a logística programada para o dia seguinte para antecipar a demanda e planejar a distribuição de tarefas.</li>
+                                <li><strong>Atualização da Agenda de Prioridades:</strong> Revisar e atualizar a agenda pessoal, garantindo que todas as pendências importantes foram tratadas ou agendadas para o dia seguinte.</li>
+                                <li><strong>Relatório de Desempenho à Diretoria:</strong> Compilar as informações mais relevantes sobre o desempenho das operações e vendas do dia e reportar à Diretoria, conforme a estrutura hierárquica.</li>
+                                <li><strong>Encerramento:</strong> Garantir que a loja está sendo fechada corretamente, que os procedimentos de segurança foram seguidos e que a equipe está ciente do plano para o dia seguinte.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="retornar-container">
+                <div onclick="showHome()" class="btn-retornar">▲ Voltar ao Início</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="agente-locacao" class="content-section">
+        <div class="container">
+            <h1 class="titulo-secao">Manual do Agente de Locação</h1>
+            <div class="flowchart">
+                <div class="phase">
+                    <div class="phase-header" onclick="toggleDetails(this)">
+                        <h3><span class="icon">📞</span>Fase 1: Atendimento e Reserva (PF e PJ)</h3>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="details">
+                        <div class="details-content">
+                            <p class="objetivo">Este processo detalha o primeiro contato com o cliente, seja online ou presencial, com o objetivo de entender sua necessidade e efetivar uma reserva.</p>
+                            <ul>
+                                <li><strong>Identificar Tipo de Atendimento:</strong> Se o atendimento for presencial, pular diretamente para a Etapa 8. Para atendimentos online ou por telefone, iniciar na Etapa 2.</li>
+                                <li><strong>Acessar Plataforma WhatsApp:</strong> Realizar o acesso no aplicativo WhatsApp para gerenciamento dos leads.</li>
+                                <li><strong>Verificar Mensagens:</strong> Acessar o campo "Mensagens Novas" e verificar se há novas solicitações de clientes.</li>
+                                <li><strong>Analisar Fila de Atendimento:</strong> SE NÃO houver novas mensagens, continuar o monitoramento do sistema.</li>
+                                <li><strong>Iniciar Contato:</strong> SE SIM, houver uma nova mensagem, iniciar o contato com o cliente que a enviou.</li>
+                                <li><strong>Apresentação Profissional:</strong> Apresente-se ao cliente de forma clara e cordial: "Olá (nome do cliente), meu nome é XXXX e eu faço parte da equipe da Panorama Locadora, tudo bem com você?"</li>
+                                <li><strong>Identificar o Perfil do Cliente:</strong> Verifique se o cliente é Pessoa Física (PF) ou Pessoa Jurídica (PJ). No caso de PJ solicitar e-mail para envio de cotação.</li>
+                                <li><strong>Coletar Período de Locação:</strong> Pergunte e registre o número de dias que o cliente deseja alugar o veículo.</li>
+                                <li><strong>Coletar Estimativa de Quilometragem:</strong> Pergunte e registre a quilometragem que o cliente necessita para o período.</li>
+                                <li><strong>Definir Segmento do Contrato:</strong> Verifique qual o segmento desejado: Diária, Mensal, Assinatura ou Terceirização de Frota.</li>
+                                <li><strong>Identificar Preferência de Veículo:</strong> Pergunte ao cliente se prefere um veículo Sedan, SUV ou Hatch.</li>
+                                <li><strong>Apresentar Opções por Categoria:</strong> Com base na escolha anterior, ofereça as opções disponíveis para a categoria selecionada (ex: Opções A, B, C, D, E).</li>
+                                <li><strong>Identificar Preferência de Câmbio:</strong> Pergunte ao cliente se prefere um veículo Manual ou Automático.</li>
+                                <li><strong>Apresentar Opções por Câmbio:</strong> Com base na escolha, ofereça as opções de veículos disponíveis (ex: Opções A, B, C, D, E).</li>
+                                <li><strong>Apresentar Diagnóstico Final:</strong> Com base em todas as informações coletadas, apresente as opções de veículos que melhor se encaixam na necessidade do cliente.</li>
+                                <li><strong>Decisão do Cliente:</strong> SE NÃO ACEITOU nenhuma opção, mapeie outras alternativas que possam atendê-lo e apresente-as.</li>
+                                <li><strong>Confirmação da Reserva:</strong> SE ACEITOU uma das opções, informe que a reserva foi confirmada e inicie o Processo de Análise de Crédito (Fase 2).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="phase">
+                    <div class="phase-header" onclick="toggleDetails(this)">
+                        <h3><span class="icon">🔍</span>Fase 2: Análise de Crédito do Cliente</h3>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="details">
+                        <div class="details-content">
+                            <p class="objetivo">Após a confirmação da reserva, uma análise de crédito é necessária para formalizar o contrato. O processo difere para Pessoa Física e Jurídica.</p>
+                            <div class="sub-processo">
+                                <h4><span class="icon">👤</span>Processo para Pessoa Física (PF)</h4>
+                                <ul>
+                                    <li><strong>Envio do Link de Cadastro:</strong> Após a confirmação da reserva, enviar o link de cadastro para o cliente.</li>
+                                    <li><strong>Orientação sobre Documentos:</strong> Oriente o cliente sobre quais documentos e informações são necessários para o preenchimento.</li>
+                                    <li><strong>Suporte ao Cliente:</strong> Verifique ativamente se o cliente possui alguma dúvida sobre as etapas do cadastro.</li>
+                                    <li><strong>Acompanhamento do Cadastro:</strong> CASO O CLIENTE NÃO CONCLUA O CADASTRO, realize uma nova abordagem até o final do dia ou dentro das próximas 24 horas.</li>
+                                    <li><strong>Monitoramento de Dados:</strong> CASO O CLIENTE CONCLUA O CADASTRO, monitore o recebimento dos dados do cliente por e-mail.</li>
+                                    <li><strong>Impressão das Informações:</strong> Realize a impressão das informações fornecidas pelo cliente no cadastro para análise.</li>
+                                    <li><strong>Checagem de Informações Cadastrais:</strong> Verifique as seguintes informações: CPF (consultar na plataforma Virtual Crédito), Local de Trabalho (contato telefônico para confirmar nome, função, tempo de trabalho), Referência Pessoal (contato telefônico para confirmar endereço, parentesco, etc.), Endereço (pesquisa no Google Maps), Rede Social (checar perfis).</li>
+                                    <li><strong>Validação Gerencial:</strong> Após a checagem completa, solicite a validação e aprovação com a gerência.</li>
+                                    <li><strong>Decisão Pós-Análise:</strong> EM CASO DE REPROVAÇÃO, informar o cliente. EM CASO DE APROVAÇÃO, informar o cliente e seguir para a Abertura de Contrato (Fase 3).</li>
+                                    <li><strong>Processo para reserva:</strong> Uma vez aprovada a locação e sendo solicitado a reserva pelo cliente, o agente deverá realizar a agenda de dia e horário, mediante a solicitação de sinal no percentual de 50% do valor do contrato.</li>
+                                </ul>
+                            </div>
+                            <div class="sub-processo">
+                                <h4><span class="icon">🏢</span>Processo para Pessoa Jurídica (PJ)</h4>
+                                <ul>
+                                    <li><strong>Envio do Link ou Solicitação:</strong> Enviar o link de cadastro ou solicitar por e-mail o envio da documentação da empresa.</li>
+                                    <li><strong>Orientação sobre Documentos:</strong> Oriente o cliente sobre os documentos necessários para a realização do cadastro.</li>
+                                    <li><strong>Suporte ao Cliente:</strong> Verifique ativamente se o cliente possui alguma dúvida sobre as etapas do cadastro.</li>
+                                    <li><strong>Acompanhamento do Cadastro:</strong> CASO O CLIENTE NÃO CONCLUA O CADASTRO, realize uma nova abordagem até o final do dia ou dentro das próximas 24 horas.</li>
+                                    <li><strong>Monitoramento de Dados:</strong> CASO O CLIENTE CONCLUA O CADASTRO, monitore o recebimento dos dados do cliente por e-mail.</li>
+                                    <li><strong>Impressão das Informações:</strong> Realize a impressão das informações fornecidas pelo cliente no cadastro para análise.</li>
+                                    <li><strong>Checagem de Informações Cadastrais:</strong> Verifique as seguintes informações: CNPJ (consultar na plataforma Virtual Crédito), Dados da Empresa (Verificar Contrato Social, Cartão CNPJ), Referências Comerciais, Referência de Sócios (aplicar processo de PF se necessário), Endereço (pesquisa no Google Maps), Rede Social (checar perfis da empresa).</li>
+                                    <li><strong>Validação Gerencial:</strong> Após a checagem completa, solicite a validação e aprovação com a gerência.</li>
+                                    <li><strong>Decisão Pós-Análise:</strong> EM CASO DE REPROVAÇÃO, informar o cliente. EM CASO DE APROVAÇÃO, informar o cliente e seguir para a Abertura de Contrato (Fase 3).</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="phase">
+                    <div class="phase-header" onclick="toggleDetails(this)">
+                        <h3><span class="icon">✍️</span>Fase 3: Abertura de Contrato (PF e PJ)</h3>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="details">
+                        <div class="details-content">
+                            <p class="objetivo">Com o crédito aprovado, este processo formaliza a locação através da criação do contrato no sistema.</p>
+                            <ul>
+                                <li><strong>Login no Sistema HENJI:</strong> Acesse o sistema HENJI com seu login e senha.</li>
+                                <li><strong>Acessar Cadastro:</strong> Navegue até o campo CADASTRO > CLIENTE - FORNECEDOR.</li>
+                                <li><strong>Preenchimento de Dados:</strong> Preencha o sistema com todas as informações do cliente.</li>
+                                <li><strong>Abertura do Contrato:</strong> Após o preenchimento, clique em MOVIMENTAÇÃO > OPERACIONAL > CONTRATO > ABERTURA.</li>
+                                <li><strong>Preenchimento do Contrato:</strong> Preencha as informações do contrato: identificação do cliente, data de saída, tipo de carro, valores, etc.</li>
+                                <li><strong>Salvar Contrato:</strong> Após preencher todas as informações, salve o contrato.</li>
+                                <li><strong>Verificar Motorista Adicional:</strong> Verifique se haverá ou não um motorista adicional. SE NÃO HOUVER, pule para a Etapa 9. SE HOUVER, siga para a Etapa 8.</li>
+                                <li><strong>Incluir Motorista Adicional:</strong> Abra a aba "OUTRAS INFORMAÇÕES" e preencha com os dados do motorista adicional.</li>
+                                <li><strong>Impressão de Vias:</strong> Realize a impressão de 2 VIAS do Contrato e do Termo de Responsabilidade de Multa.</li>
+                                <li><strong>Coleta de Assinatura:</strong> Solicite a assinatura do cliente em ambas as vias, conferindo com um documento (CNH ou Identidade).</li>
+                                <li><strong>Armazenamento:</strong> Guarde o contrato assinado na pasta correspondente e entregue a 2ª via assinada ao cliente.</li>
+                                <li><strong>Solicitação de Pagamento:</strong> Solicite ao cliente que realize o pagamento do contrato e do "caução".</li>
+                                <li><strong>Processamento do Pagamento:</strong> Utilize a máquina de cartão (rede): Abra a aba CRÉDITO > PRÉ-AUTORIZAÇÃO CRÉDITO > SOLICITAÇÃO. Preencha com o valor, N° de parcelas (1x), e clique em OK. Solicite a senha ao cliente.</li>
+                                <li><strong>Finalização do Pagamento:</strong> Finalize o pagamento e pergunte se o cliente deseja a 2ª via do comprovante (Débito/Crédito/PIX).</li>
+                                <li><strong>Próxima Etapa:</strong> Com o contrato assinado e o pagamento efetuado, siga para o Checklist de Entrega (Fase 4).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="phase">
+                    <div class="phase-header" onclick="toggleDetails(this)">
+                        <h3><span class="icon">🚗</span>Fase 4: Checklist e Entrega do Veículo (PF e PJ)</h3>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="details">
+                        <div class="details-content">
+                            <p class="objetivo">Este é o procedimento de vistoria e documentação do estado do veículo antes de entregá-lo ao cliente.</p>
+                            <ul>
+                                <li><strong>Iniciar Aplicação Checklist:</strong> Após a abertura do contrato (via sistema HENJI), inicie a aplicação do checklist no sistema VEX.</li>
+                                <li><strong>Acessar Aplicativo Mobile (VEX):</strong> Abra o aplicativo VEX no dispositivo móvel.</li>
+                                <li><strong>Inserir Placa do Veículo:</strong> Digite a placa do veículo que será entregue.</li>
+                                <li><strong>Selecionar Opção de Entrega:</strong> Selecione a opção: ENTREGA.</li>
+                                <li><strong>Preenchimento da Aba Inicial:</strong> Preencha: Nº do Contrato (do sistema HENJI), Nome do Cliente, E-mail do Cliente, Quilometragem, Local e cidade, Nível de combustível, Classificação do pneu.</li>
+                                <li><strong>Preenchimento do Questionário:</strong> Siga para a aba Questionário.</li>
+                                <li><strong>Classificar Itens do Carro:</strong> Classifique o estado de cada item do carro (antena, calota, chave de roda, step, etc.).</li>
+                                <li><strong>Registro Fotográfico:</strong> Siga para a aba de Fotos.</li>
+                                <li><strong>Fotografar Partes Obrigatórias:</strong> Tire fotos obrigatórias do veículo: para-brisa, frente, lateral direita, lateral esquerda, traseira, adicionando todas e demais fotos que detalham o estado do veículos.</li>
+                                <li><strong>Assinaturas (Funcionário):</strong> Siga para a aba de Assinatura e realize a sua assinatura (Vistoriador/Funcionário).</li>
+                                <li><strong>Assinatura (Cliente):</strong> Colete a assinatura do cliente na mesma aba.</li>
+                                <li><strong>Conferência e Salvamento:</strong> SALVE O CHECKLIST e realize a conferência do e-mail do cliente para garantir o envio correto.</li>
+                                <li><strong>Validação Final:</strong> CASO FALTE INFORMAÇÃO, o sistema informará o item pendente. Retorne e complete. CASO AS INFORMAÇÕES ESTEJAM COMPLETAS, salve e finalize. O veículo está liberado para o cliente.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="phase">
+                    <div class="phase-header" onclick="toggleDetails(this)">
+                        <h3><span class="icon">↩️</span>Fase 5: Checklist e Devolução do Veículo (PF e PJ)</h3>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="details">
+                        <div class="details-content">
+                            <p class="objetivo">Procedimento de vistoria no momento em que o cliente retorna o veículo para a locadora.</p>
+                            <ul>
+                                <li><strong>Acessar Aplicativo Mobile (VEX):</strong> Abra o aplicativo VEX no dispositivo móvel.</li>
+                                <li><strong>Inserir Placa do Veículo:</strong> Digite a placa do veículo que está sendo devolvido.</li>
+                                <li><strong>Selecionar Opção de Devolução:</strong> Selecione a opção: DEVOLUÇÃO.</li>
+                                <li><strong>Preenchimento da Aba Inicial:</strong> Preencha: Quilometragem atual, Nível de combustível, Classificação do pneu.</li>
+                                <li><strong>Preenchimento do Questionário:</strong> Siga para a aba Questionário.</li>
+                                <li><strong>Classificar Itens do Carro:</strong> Classifique o estado de cada item do carro na devolução (antena, calota, etc.).</li>
+                                <li><strong>Registro Fotográfico:</strong> Siga para a aba de Fotos.</li>
+                                <li><strong>Fotografar Partes Obrigatórias:</strong> Tire fotos obrigatórias do veículo para registrar seu estado na devolução.</li>
+                                <li><strong>Assinaturas (Funcionário):</strong> Siga para a aba de Assinatura e realize a sua assinatura (Vistoriador/Funcionário).</li>
+                                <li><strong>Assinatura (Cliente):</strong> Colete a assinatura do cliente na mesma aba.</li>
+                                <li><strong>Conferência e Salvamento:</strong> SALVE O CHECKLIST e realize a conferência do e-mail do cliente.</li>
+                                <li><strong>Validação Final:</strong> CASO FALTE INFORMAÇÃO, o sistema informará. Retorne e complete. CASO COMPLETO, salve, finalize e siga para o Fechamento de Contrato (Fase 6).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="phase">
+                    <div class="phase-header" onclick="toggleDetails(this)">
+                        <h3><span class="icon">🏁</span>Fase 6: Fechamento de Contrato (PF e PJ)</h3>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="details">
+                        <div class="details-content">
+                            <p class="objetivo">Última etapa do processo de locação, onde o contrato é finalizado no sistema e os acertos financeiros são concluídos.</p>
+                            <ul>
+                                <li><strong>Login no Sistema HENJI:</strong> Acesse o sistema HENJI com seu login e senha.</li>
+                                <li><strong>Acessar Fechamento:</strong> Navegue até MOVIMENTAÇÃO > OPERACIONAL > CONTRATO > FECHAMENTO.</li>
+                                <li><strong>Informar Contrato:</strong> Preencha o sistema com o Nº do Contrato que está sendo fechado.</li>
+                                <li><strong>Preencher Dados da Devolução:</strong> Preencha as informações solicitadas: nível de combustível, quilometragem, horário de devolução, etc.</li>
+                                <li><strong>Analisar Condição do Veículo (Com Avaria):</strong> CASO A ENTREGA SEJA COM AVARIA (falta de combustível, sujeira aparente, etc.): Abra a aba OUTRAS INFORMAÇÕES > DESPESA para registrar os custos adicionais.</li>
+                                <li><strong>Salvar Contrato (Com Avaria):</strong> Após o preenchimento de todas as informações, incluindo despesas, SALVE O CONTRATO.</li>
+                                <li><strong>Cobrança de Taxa Extra:</strong> Notifique o cliente sobre a cobrança da taxa extra e verifique o meio de pagamento (Débito/Crédito/PIX).</li>
+                                <li><strong>Impressão e Assinatura (Com Avaria):</strong> Realize a impressão de 2 VIAS do contrato finalizado e colete a assinatura do cliente.</li>
+                                <li><strong>Analisar Condição do Veículo (Sem Avaria):</strong> CASO A ENTREGA SEJA SEM AVARIA: Siga diretamente para esta etapa.</li>
+                                <li><strong>Salvar Contrato (Sem Avaria):</strong> Após o preenchimento de todas as informações, SALVE O CONTRATO.</li>
+                                <li><strong>Impressão e Assinatura (Sem Avaria):</strong> Realize a impressão de 2 VIAS do contrato finalizado e colete a assinatura do cliente.</li>
+                                <li><strong>Estorno do Caução:</strong> Realize o estorno do caução ao cliente.</li>
+                                <li><strong>Processamento do Estorno:</strong> Utilize a máquina de cartão (rede): Abra a aba CRÉDITO > PRÉ-AUTORIZAÇÃO CRÉDITO > CANCELAMENTO. Preencha com o Nº do CV e a data do comprovante.</li>
+                                <li><strong>Armazenamento Final:</strong> Armazene o contrato final assinado em pasta e entregue a 2ª via ao cliente com o comprovante de estorno anexado.</li>
+                                <li><strong>FIM DO PROCESSO:</strong> O processo de locação está oficialmente encerrado.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="retornar-container">
+                <div onclick="showHome()" class="btn-retornar">▲ Voltar ao Início</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="assistente-financeiro" class="content-section gray-bg">
+        <div class="container">
+            <h1 class="titulo-secao">Manual do Assistente Financeiro</h1>
+            <div class="flowchart">
+                <div class="phase">
+                    <div class="phase-header" onclick="toggleDetails(this)">
+                        <h3><span class="icon">💸</span>Fase 1: Gestão Diária de Contas a Pagar</h3>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="details">
+                        <div class="details-content">
+                            <p class="objetivo">Este processo abrange a rotina de recebimento, registro e programação de todos os compromissos financeiros da empresa.</p>
+                            <ul>
+                                <li><strong>Receber e Organizar Documentos:</strong> Centralizar todos os documentos de cobrança recebidos (notas fiscais, boletos, faturas de fornecedores). Verificar a validade e a correção dos dados.</li>
+                                <li><strong>Lançamento de Contas a Pagar:</strong> Registrar todas as notas fiscais e boletos no sistema de gestão financeira (Henji: Movimentação > Financeiro > Títulos > Inclusão Títulos), atentando-se para o correto preenchimento de valores, datas de vencimento e centro de custo.</li>
+                                <li><strong>Elaborar Relatório de Pagamentos:</strong> Preparar e emitir o relatório de programação de pagamentos do dia/semana (Henji: Relatórios > Financeiros > Relatório Financeiro). Este relatório deve ser claro, listando fornecedor, valor e data de vencimento.</li>
+                                <li><strong>Submeter para Aprovação da Diretoria:</strong> Enviar o relatório de programação de pagamentos para o Supervisor ou Diretoria para validação e aprovação final.</li>
+                                <li><strong>Realizar Baixa de Pagamentos:</strong> Após a confirmação, dar baixa nas parcelas pagas no sistema (Henji: Movimentação > Financeiro > Títulos > Baixa de Títulos). Anexar o comprovante ao respectivo lançamento.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="phase">
+                    <div class="phase-header" onclick="toggleDetails(this)">
+                        <h3><span class="icon">💰</span>Fase 2: Gestão Diária de Contas a Receber</h3>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="details">
+                        <div class="details-content">
+                            <p class="objetivo">Processo focado no faturamento, cobrança e controle dos valores devidos à empresa, garantindo a entrada de receitas.</p>
+                            <ul>
+                                <li><strong>Programação de Contas a Pagar:</strong> Deverá ser realizada diariamente até as 10h da manhã.</li>
+                                <li><strong>Provisão de Recebimentos:</strong> Deverá ser emitido um relatório toda sexta-feira indicando a provisão de recebimento de receitas da semana seguinte (de sábado à sexta), que deverá ser entregue a diretoria até as 12h.</li>
+                                <li><strong>Faturar Clientes (PJ e Mensalistas):</strong> Emitir e enviar faturas para clientes PJ e mensalistas. Enviar ao cliente Nota de Débito + Boleto de cobrança via e-mail com confirmação de leitura.</li>
+                                <li><strong>Registrar Transações de Cartão:</strong> Registrar todas as transações de débito e crédito no sistema. Conferir os relatórios da operadora do cartão com os registros do sistema de locação.</li>
+                                <li><strong>Gerenciar Contas a Receber:</strong> Monitorar continuamente todas as contas a receber para identificar pagamentos pendentes ou em atraso (Henji: Relatório > Relatório Financeiro).</li>
+                                <li><strong>Executar Ações de Cobrança - Inadimplência:</strong> Para pagamentos em atraso, iniciar o processo de cobrança seguindo a POLÍTICA DE COBRANÇA PANORAMA.</li>
+                                <li><strong>Garantir Conformidade dos Contratos:</strong> Assegurar a conformidade financeira de todos os contratos, garantindo que todas as transações estejam de acordo com as leis e regulamentos aplicáveis.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="phase">
+                    <div class="phase-header" onclick="toggleDetails(this)">
+                        <h3><span class="icon">⚖️</span>Fase 3: Conciliação e Controle Financeiro</h3>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="details">
+                        <div class="details-content">
+                             <p class="objetivo">Processo diário de verificação e cruzamento de dados para garantir a exatidão das informações financeiras.</p>
+                            <ul>
+                                <li><strong>Conferir Extratos Bancários:</strong> Realizar a conferência diária dos extratos de todas as contas bancárias da empresa, comparando os lançamentos com os registros internos.</li>
+                                <li><strong>Conciliar Recebimentos de Cartão:</strong> Verificar os relatórios bancários de recebimento das vendas por cartão, garantindo que os valores creditados correspondem às vendas realizadas, já descontadas as taxas (Henji: Relatórios > Financeiro > Relação de recebimento de cartões).</li>
+                                <li><strong>Assegurar Precisão dos Registros:</strong> Ser responsável pelo registro preciso de todos os pagamentos e recebimentos, garantindo que cada transação seja devidamente documentada no sistema financeiro.</li>
+                                <li><strong>Analisar Fluxo de Caixa:</strong> Manter o controle do fluxo de caixa, registrando todas as entradas e saídas para fornecer uma visão clara da liquidez da empresa.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                 <div class="phase">
+                    <div class="phase-header" onclick="toggleDetails(this)">
+                        <h3><span class="icon">📂</span>Fase 4: Fechamento, Relatórios e Apoio Contábil</h3>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="details">
+                        <div class="details-content">
+                             <p class="objetivo">Processo com rotinas periódicas (geralmente mensais) para consolidar informações e apoiar a gestão e a contabilidade externa.</p>
+                            <ul>
+                                <li><strong>Elaborar Relatórios de Receitas:</strong> Preparar relatórios detalhados de receitas para o departamento financeiro, fornecendo informações valiosas para a tomada de decisões.</li>
+                                <li><strong>Preparar Documentação Contábil:</strong> Organizar e enviar toda a documentação necessária (notas fiscais, comprovantes, extratos) para o escritório de contabilidade.</li>
+                                <li><strong>Gerar Relatórios Gerenciais:</strong> Auxiliar na preparação de relatórios financeiros gerenciais (ex: DRE, Balancete) conforme solicitado pelo Supervisor ou Diretoria.</li>
+                                <li><strong>Arquivar Documentos:</strong> Manter um arquivo físico e/ou digital organizado de toda a documentação financeira por pelo menos 5 anos.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="retornar-container">
+                <div onclick="showHome()" class="btn-retornar">▲ Voltar ao Início</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="agente-servico" class="content-section">
+        <div class="container">
+            <h1 class="titulo-secao">Manual do Agente de Serviço</h1>
+             <div class="flowchart">
+                <div class="phase">
+                    <div class="phase-header" onclick="toggleDetails(this)">
+                        <h3><span class="icon">☀️</span>Fase 1: Início do Dia e Planejamento da Frota</h3>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="details">
+                        <div class="details-content">
+                            <ul>
+                                <li><strong>Alinhamento com Operações:</strong> Realizar uma reunião rápida ou troca de informações com o(s) Agente(s) de Locação para se atualizar sobre as movimentações do dia.</li>
+                                <li><strong>Verificar Reservas do Dia:</strong> Acessar o sistema de reservas para identificar as locações e devoluções programadas para o dia e o dia seguinte.</li>
+                                <li><strong>Inspecionar Pátio (Frota Disponível):</strong> Realizar uma verificação física de toda a frota disponível no pátio. Conferir se os veículos estão limpos, posicionados corretamente e prontos para locação.</li>
+                                <li><strong>Verificar Frota "Interditada":</strong> Checar a lista de veículos em manutenção ("interditada"). Entrar em contato com fornecedores para acompanhar o andamento dos serviços e confirmar os prazos de entrega.</li>
+                                <li><strong>Atualizar Quadro de Gestão à Vista:</strong> Atualizar o quadro de gestão com o status real de cada veículo (Ex: Disponível, Em Preparação, Manutenção, Reservado).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="phase">
+                    <div class="phase-header" onclick="toggleDetails(this)">
+                        <h3><span class="icon">🔄</span>Fase 2: Preparação e Movimentação de Veículos</h3>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="details">
+                        <div class="details-content">
+                            <ul>
+                                <li><strong>Receber Ordem de Preparação:</strong> Receber do Agente de Locação a ordem para preparar um veículo específico para um contrato de check-out.</li>
+                                <li><strong>Realizar Check-out do Veículo:</strong> Realizar a inspeção de entrega do veículo. Seguir o "Processo da Fase 4: Checklist e Entrega do Veículo" utilizando o aplicativo VEX.</li>
+                                <li><strong>Orientar o Cliente:</strong> Oferecer orientações básicas ao cliente sobre o funcionamento do veículo (ex: tipo de combustível, funções do painel).</li>
+                                <li><strong>Realizar Check-in do Veículo:</strong> No retorno do cliente, realizar a inspeção de devolução. Seguir o "Processo da Fase 5: Checklist e Devolução do Veículo" utilizando o aplicativo VEX.</li>
+                                <li><strong>Identificar e Relatar Avarias:</strong> Durante o check-in, verificar visualmente por novos danos, nível de combustível e limpeza. Reportar imediatamente qualquer avaria ao Agente de Locação.</li>
+                                <li><strong>Movimentar Veículo Pós-Devolução:</strong> Após o check-in, mover o veículo para a área designada (lavagem, manutenção ou pátio de disponíveis).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="phase">
+                    <div class="phase-header" onclick="toggleDetails(this)">
+                        <h3><span class="icon">⚙️</span>Fase 3: Gestão e Acompanhamento da Manutenção</h3>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="details">
+                        <div class="details-content">
+                            <ul>
+                                <li><strong>Identificar Necessidade de Manutenção:</strong> Identificar veículos que necessitam de manutenção preventiva (por km ou tempo) ou corretiva.</li>
+                                <li><strong>Interditar o Veículo:</strong> Retirar o veículo da disponibilidade no sistema e no quadro de gestão. Abertura de uma Ordem de Serviço (OS) interna.</li>
+                                <li><strong>Diagnóstico e Orçamento:</strong> Levar o veículo ao fornecedor ou solicitar a vinda de um mecânico para diagnóstico. Receber e analisar o orçamento.</li>
+                                <li><strong>Obter Aprovação:</strong> Apresentar o orçamento para o Supervisor ou Gerência para aprovação.</li>
+                                <li><strong>Acompanhar o Serviço:</strong> Após a aprovação, acompanhar ativamente a execução do serviço, cobrando o cumprimento do prazo acordado com o fornecedor.</li>
+                                <li><strong>Inspecionar Pós-Manutenção:</strong> Ao receber o veículo do fornecedor, realizar uma inspeção completa para garantir que o serviço foi executado com qualidade.</li>
+                                <li><strong>Atualizar Ficha do Veículo:</strong> Passar as informações sobre o serviço realizado para o responsável, para que a "ficha vida" da unidade seja atualizada.</li>
+                                <li><strong>Liberar Veículo:</strong> Se tudo estiver em conformidade, liberar o veículo, atualizando seu status para "Disponível".</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="phase">
+                    <div class="phase-header" onclick="toggleDetails(this)">
+                        <h3><span class="icon">🌙</span>Fase 4: Rotinas Gerais e Fim do Expediente</h3>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="details">
+                        <div class="details-content">
+                            <ul>
+                                <li><strong>Apoio Geral (Tempo Ocioso):</strong> Utilizar o tempo ocioso para conferir a frota, verificar calibragem de pneus, nível de água/óleo e apoiar outros setores.</li>
+                                <li><strong>Organização do Pátio:</strong> Manter o pátio de veículos sempre limpo e organizado.</li>
+                                <li><strong>Preparar para o Dia Seguinte:</strong> Ao final do dia, verificar as primeiras entregas e retiradas do dia seguinte e deixar os veículos correspondentes já preparados.</li>
+                                <li><strong>Comunicação Final:</strong> Comunicar ao próximo turno ou ao Supervisor sobre qualquer pendência ou informação relevante.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="retornar-container">
+                <div onclick="showHome()" class="btn-retornar">▲ Voltar ao Início</div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const homePage = document.getElementById('home');
+        const contentSections = document.querySelectorAll('.content-section');
+
+        // Objeto com as senhas para cada módulo
+        const passwords = {
+            'supervisor': 'supervisor@p-2025',
+            'agente-locacao': 'agente!p-2025',
+            'assistente-financeiro': 'financeiro#p-2025',
+            'agente-servico': 'agente&p-2025'
+        };
+
+        function requestPassword(manualId) {
+            const password = prompt(`Para acessar o módulo, por favor, insira a senha:`);
+            
+            // Se o usuário clicar em "cancelar", a senha será null
+            if (password === null) {
+                return; 
+            }
+
+            if (passwords[manualId] && password === passwords[manualId]) {
+                showManual(manualId);
+            } else {
+                alert('Senha incorreta. Acesso negado.');
+            }
+        }
+
+        function showManual(manualId) {
+            // Esconde a página inicial
+            homePage.style.display = 'none';
+
+            // Esconde todas as seções de conteúdo
+            contentSections.forEach(section => {
+                section.style.display = 'none';
+            });
+
+            // Mostra a seção de conteúdo específica
+            const manualToShow = document.getElementById(manualId);
+            if (manualToShow) {
+                manualToShow.style.display = 'block';
+                window.scrollTo(0, 0); // Rola para o topo da página
+            }
+        }
+
+        function showHome() {
+            // Esconde todas as seções de conteúdo
+            contentSections.forEach(section => {
+                section.style.display = 'none';
+            });
+
+            // Mostra a página inicial
+            homePage.style.display = 'flex';
+            window.scrollTo(0, 0); // Rola para o topo da página
+        }
+
+        function toggleDetails(headerElement) {
+            const phase = headerElement.parentElement;
+            const isAlreadyActive = phase.classList.contains('active');
+
+            // Fecha todos os outros cards no mesmo flowchart
+            phase.parentElement.querySelectorAll('.phase').forEach(p => {
+                if (p !== phase) {
+                    p.classList.remove('active');
+                }
+            });
+
+            // Alterna o estado do card clicado
+            if (!isAlreadyActive) {
+                phase.classList.add('active');
+            } else {
+                phase.classList.remove('active');
+            }
+        }
+    </script>
+</body>
+</html>
