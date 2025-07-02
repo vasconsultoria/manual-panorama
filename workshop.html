@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workshop de Conduta e Padronização - Panorama Rent a Car</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cor-verde-panorama: #006442;
+            --cor-verde-escuro: #004d33;
+            --cor-amarelo-panorama: #facc15;
+            --cor-branco: #ffffff;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .workshop-container {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--cor-verde-panorama), var(--cor-verde-escuro));
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            color: var(--cor-branco);
+        }
+
+        .slides-wrapper {
+            flex-grow: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 20px 60px;
+            text-align: center;
+            animation: fadeIn 0.7s ease-in-out;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+        
+        .slide::-webkit-scrollbar { width: 8px; }
+        .slide::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+        .slide::-webkit-scrollbar-thumb { background-color: var(--cor-amarelo-panorama); border-radius: 10px; }
+
+        .slide.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide img.logo {
+            max-width: 350px;
+            margin-bottom: 20px;
+        }
+        
+        .slide img.team-photo {
+            max-width: 90%;
+            max-height: 40vh;
+            width: auto;
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .slide img.manual-screenshot {
+             max-width: 90%;
+             width: 700px;
+             border-radius: 8px;
+             border: 1px solid var(--cor-amarelo-panorama);
+             margin-top: 20px;
+        }
+        
+        .slide-split-layout {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            gap: 40px;
+            width: calc(100% - 120px);
+        }
+        .slide-split-layout > .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .slide-split-layout > .text-content { align-items: flex-start; }
+        .slide-split-layout > .image-content { align-items: center; }
+        .slide-split-layout img {
+            max-height: 55vh;
+            width: auto;
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .slide-split-layout h2, .slide-split-layout p, .slide-split-layout ol, .slide-split-layout ul {
+            text-align: left;
+            max-width: 100%;
+        }
+        .slide-split-layout ol, .slide-split-layout ul { padding-left: 25px; }
+
+        h1, h2, h3 { font-family: 'Playfair Display', serif; }
+
+        h1 { color: var(--cor-amarelo-panorama); }
+        .title-slide h2 { color: var(--cor-branco); }
+        .slide:not(.title-slide) h2, .slide-split-layout h2 { color: var(--cor-amarelo-panorama); }
+        .scenario h3 { color: var(--cor-amarelo-panorama); }
+        p, li, .pillar-header h3 { color: var(--cor-branco); }
+        strong { color: var(--cor-amarelo-panorama); }
+        a { color: var(--cor-amarelo-panorama); font-weight: 600; }
+        
+        .title-slide h1 {
+            font-size: 3rem;
+            margin: 10px 0;
+            text-shadow: 1px 1px 5px rgba(0,0,0,0.2);
+        }
+        
+        .title-slide h2 {
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+            text-shadow: 1px 1px 5px rgba(0,0,0,0.2);
+        }
+
+        .slide h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .slide p, .slide li {
+            font-size: 1.15rem;
+            line-height: 1.7;
+            max-width: 800px;
+        }
+
+        ul, ol { text-align: left; padding-left: 40px; max-width: 700px; margin-top: 20px; }
+        ul li { margin-bottom: 15px; }
+        
+        .pillars-accordion { width: 100%; max-width: 800px; margin-top: 20px; }
+        .pillar-item {
+            background-color: rgba(255, 255, 255, 0.05);
+            margin-bottom: 10px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(250, 204, 21, 0.5);
+        }
+        .pillar-header {
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+        .pillar-header:hover { background-color: rgba(255, 255, 255, 0.1); }
+        .pillar-item.active .pillar-header { background-color: var(--cor-amarelo-panorama); }
+        .pillar-item.active .pillar-header h3, .pillar-item.active .pillar-header .icon { color: var(--cor-verde-escuro); }
+        .pillar-header .icon { font-size: 1.5rem; font-weight: bold; transition: transform 0.4s ease; }
+        .pillar-item.active .pillar-header .icon { transform: rotate(45deg); }
+        .pillar-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out; background: rgba(0,0,0,0.2); }
+        .pillar-content-inner { padding: 20px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+        .pillar-content-inner p { flex: 1; min-width: 250px; margin: 0; }
+        .pillar-content-inner img { flex-shrink: 0; width: 250px; height: auto; border-radius: 8px; }
+        
+        .scenario {
+             background-color: rgba(255, 255, 255, 0.05);
+             border-left: 5px solid var(--cor-amarelo-panorama);
+             padding: 20px;
+             text-align: left;
+             margin-top: 15px;
+             border-radius: 0 8px 8px 0;
+        }
+
+        .nav-buttons {
+            height: 85px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+            box-sizing: border-box;
+            background-color: transparent;
+            flex-shrink: 0;
+        }
+
+        .nav-buttons button {
+            background-color: transparent;
+            color: var(--cor-branco);
+            border: 2px solid var(--cor-branco);
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0.6; 
+        }
+
+        .nav-buttons button:hover {
+            background-color: var(--cor-amarelo-panorama);
+            color: var(--cor-verde-escuro);
+            border-color: var(--cor-amarelo-panorama);
+            transform: translateY(-2px);
+            opacity: 1; 
+        }
+
+        .nav-buttons button:disabled {
+            background-color: transparent;
+            border-color: rgba(100,100,100,0.4);
+            color: rgba(255,255,255,0.4);
+            cursor: not-allowed;
+            transform: none;
+            opacity: 0.4;
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div class="workshop-container">
+        
+        <div class="slides-wrapper">
+            <div class="slide active title-slide">
+                <img src="Panorama-LOGO.png" alt="Logo Panorama Rent a Car" class="logo">
+                <h2>Workshop de Conduta e Padronização de Processos</h2>
+                <h1>Nossa Rota para a Excelência</h1>
+            </div>
+            
+            <div class="slide">
+                <h2>O Propósito do Nosso Encontro</h2>
+                <p>É um prazer ter toda a equipe reunida hoje.</p>
+                <p>Hoje vamos conversar sobre como podemos trabalhar de forma mais inteligente e unificada, usando nossas novas ferramentas para alcançar a excelência.</p>
+                <img src="foto-equipe.jpg" alt="Equipe Panorama na frente da loja" class="team-photo">
+            </div>
+
+            <!-- ############## AJUSTE SÓ NESTE SLIDE (TERCEIRO) ################## -->
+            <div class="slide" style="min-height: 100vh; box-sizing: border-box; overflow-y: auto; position: relative;">
+                <h2>Nossos Objetivos com este Workshop</h2>
+                <ul>
+                    <li style="font-size: 1.1rem;"><strong>Unificar nossos padrões de excelência:</strong> Garantir a mesma experiência de alta qualidade para todos os clientes, em todos os atendimentos.</li>
+                    <li style="font-size: 1.1rem;"><strong>Facilitar nosso dia a dia:</strong> Com processos claros e definidos, a tomada de decisão se torna mais rápida e segura.</li>
+                    <li style="font-size: 1.1rem;"><strong>Reduzir erros e aumentar a eficiência:</strong> Seguir um padrão diminui o retrabalho e otimiza nosso tempo.</li>
+                    <li style="font-size: 1.1rem;"><strong>Fortalecer a marca Panorama:</strong> Nosso objetivo é que a Panorama seja sinônimo de confiança, qualidade e profissionalismo no mercado.</li>
+                </ul>
+                <img src="frente-loja.jpg" alt="Vista panorâmica da fachada da Panorama" class="team-photo">
+            </div>
+            <!-- ################################################################# -->
+
+            <div class="slide slide-split-layout">
+                <div class="slide-content image-content">
+                    <img src="equipe-locadora2.jpg" alt="Equipe Panorama reunida">
+                </div>
+                <div class="slide-content text-content">
+                    <h2>O que é "Excelência" para Você?</h2>
+                    <p>Em uma palavra, o que significa "excelência no atendimento" na sua opinião?</p>
+                </div>
+            </div>
+
+            <div class="slide">
+                 <h2>Nossa Conduta é a Nossa Marca</h2>
+                 <p>Cada interação com o cliente e com os colegas constrói a reputação da nossa empresa.</p>
+                 <img src="IMG-20250701-WA0083.jpg" alt="Showroom da Panorama organizado" class="team-photo">
+            </div>
+            
+            <div class="slide">
+                <h2>Os 4 Pilares da Nossa Conduta Profissional</h2>
+                <p>Clique em cada pilar para revelar os detalhes.</p>
+                <div class="pillars-accordion">
+                    <div class="pillar-item">
+                        <div class="pillar-header" onclick="toggleAccordion(this)">
+                            <h3>PROFISSIONALISMO</h3>
+                            <span class="icon">+</span>
+                        </div>
+                        <div class="pillar-content">
+                             <div class="pillar-content-inner">
+                                <p>Seguir os processos com cordialidade e organização, desde o primeiro "Olá" ao cliente até o fechamento do contrato.</p>
+                                <img src="show-room2.jpg" alt="Atendimento profissional no showroom da Panorama">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pillar-item">
+                         <div class="pillar-header" onclick="toggleAccordion(this)">
+                            <h3>INTEGRIDADE E PRECISÃO</h3>
+                            <span class="icon">+</span>
+                        </div>
+                        <div class="pillar-content">
+                             <div class="pillar-content-inner">
+                                <p>Garantir que todas as informações nos sistemas (Henji, VEX) e nos processos financeiros estejam 100% corretas.</p>
+                                <img src="foto-equipe.jpg" alt="Equipe trabalhando nos sistemas com precisão">
+                             </div>
+                        </div>
+                    </div>
+                    <div class="pillar-item">
+                        <div class="pillar-header" onclick="toggleAccordion(this)">
+                             <h3>COLABORAÇÃO</h3>
+                            <span class="icon">+</span>
+                        </div>
+                        <div class="pillar-content">
+                             <div class="pillar-content-inner">
+                                <p>Entender que somos uma engrenagem. O trabalho de um impacta o do outro. A comunicação é a chave.</p>
+                                <img src="eequipe-panorama.jpg" alt="Toda a equipe Panorama colaborando">
+                            </div>
+                        </div>
+                     </div>
+                    <div class="pillar-item">
+                        <div class="pillar-header" onclick="toggleAccordion(this)">
+                            <h3>PROATIVIDADE E SOLUÇÃO</h3>
+                            <span class="icon">+</span>
+                        </div>
+                        <div class="pillar-content">
+                            <div class="pillar-content-inner">
+                                <p>Agir para resolver pendências antes que se tornem problemas maiores, seja na gestão de contratos ou na manutenção da frota.</p>
+                                <img src="frota1.jpg" alt="Frota de veículos pronta, resultado de proatividade">
+                            </div>
+                        </div>
+                 </div>
+                </div>
+            </div>
+            
+            <div class="slide">
+                <h2>Atividade: O que fazer quando...?</h2>
+                <p>Vamos discutir e encontrar a melhor solução para os cenários abaixo, usando os 4 Pilares da Conduta.</p>
+                <div class="scenario">
+                    <h3>Cenário 1</h3>
+                    <p>"Um cliente chega muito irritado na loja, reclamando em voz alta sobre um problema que aconteceu na sua última locação. Qual é a conduta ideal?"</p>
+                </div>
+                 <div class="scenario">
+                    <h3>Cenário 2</h3>
+                    <p>"Você percebe que um colega de outro setor esqueceu de realizar um procedimento importante que vai impactar negativamente o seu trabalho. Como você age, com foco na colaboração?"</p>
+                </div>
+            </div>
+
+            <div class="slide slide-split-layout">
+                <div class="slide-content image-content">
+                    <img src="equipe-locadora.jpg" alt="Equipe da locadora Panorama">
+                </div>
+                <div class="slide-content text-content">
+                    <h2>Módulo 3: Navegando pelos Manuais na Prática</h2>
+                    <p>A teoria como ferramenta para a prática do dia a dia.</p>
+                </div>
+            </div>
+
+            <div class="slide">
+                 <h2>Conheça sua Ferramenta de Trabalho Digital</h2>
+                <p>Apresentamos o nosso Manual de Procedimentos Operacionais online.</p>
+                <p><strong>Link de Acesso:</strong> <a href="https://vasconsultoria.github.io/manual-panorama/" target="_blank">https://vasconsultoria.github.io/manual-panorama/</a></p>
+                <img src="manual-screenshot.png" alt="Screenshot do Manual Panorama" class="manual-screenshot">
+            </div>
+
+            <div class="slide slide-split-layout">
+                <div class="slide-content text-content">
+                    <h2>Atividade Prática: Resolva com o Manual</h2>
+                     <ol>
+                        <li><strong>Passo 1:</strong> Agora, vamos nos dividir por função (Agentes de Locação, Financeiro, etc.).</li>
+                        <li><strong>Passo 2:</strong> Cada grupo receberá um "Estudo de Caso" do seu dia a dia.</li>
+                        <li><strong>Passo 3:</strong> O desafio é encontrar a solução e o passo a passo EXCLUSIVAMENTE dentro do seu manual de procedimento.</li>
+                    </ol>
+                </div>
+                <div class="slide-content image-content">
+                    <img src="frota3.jpg" alt="Equipe Panorama em evento de Marketing e Vendas">
+                </div>
+            </div>
+            
+            <div class="slide slide-split-layout">
+                <div class="slide-content image-content">
+                     <img src="coffe.jpg" alt="Momento do café e integração da equipe">
+                </div>
+                <div class="slide-content text-content">
+                    <h2>Coffee Break</h2>
+                    <p>15 minutos para um café e recarregar as energias!</p>
+                </div>
+            </div>
+
+             <div class="slide slide-split-layout">
+                <div class="slide-content image-content">
+                    <img src="frota3.jpg" alt="Frota de carros da Panorama alinhada">
+                </div>
+                <div class="slide-content text-content">
+                    <h2>Módulo 4: A Engrenagem Perfeita</h2>
+                    <p>Como nossas funções se conectam para entregar o resultado final.</p>
+                </div>
+            </div>
+
+            <div class="slide">
+                <h2>Atividade em Equipes Mistas: O Desafio Corporativo</h2>
+                <div class="scenario">
+                     <h3>Cenário</h3>
+                    <p>"Um cliente PJ importante fechou um contrato de terceirização. A retirada do primeiro carro é amanhã às 8h. Durante a preparação final, o Agente de Serviço notou uma falha no freio. O cliente não pode esperar."</p>
+                </div>
+                 <div class="scenario">
+                     <h3>Desafio</h3>
+                    <p>"Usando seus manuais, desenhem um plano de ação conjunto. Qual o papel do Supervisor? Do Agente de Locação? Do Agente de Serviço? Do Assistente Financeiro para resolver isso em equipe?"</p>
+                </div>
+            </div>
+
+            <div class="slide slide-split-layout">
+                <div class="slide-content text-content">
+                    <h2>Módulo 5: Fechamento e Próximos Passos</h2>
+                    <p>O que levamos deste encontro e como aplicaremos no nosso dia a dia.</p>
+                </div>
+                <div class="slide-content image-content">
+                    <img src="frota2.jpg" alt="Carros da Panorama em frente à loja em um dia de sol">
+                </div>
+            </div>
+            
+             <div class="slide">
+                 <h2>Resumo do Nosso Dia</h2>
+                 <p><strong>Recapitulando os 4 Pilares da Conduta:</strong></p>
+                 <p>Profissionalismo, Integridade, Colaboração e Proatividade.</p>
+                 <p><strong>Reforçando os Manuais:</strong></p>
+                 <p>Nossa principal ferramenta de apoio para garantir a consistência e a qualidade do nosso trabalho.</p>
+             </div>
+            
+            <div class="slide">
+                 <h2>Dúvidas?</h2>
+                 <p>A hora de perguntar é agora!</p>
+            </div>
+
+            <!-- ############## AJUSTE SÓ NESTE SLIDE (ÚLTIMO) ################## -->
+<div class="slide" style="min-height: 100vh; box-sizing: border-box; overflow-y: auto; position: relative;">
+    <h2>Nosso Compromisso com a Excelência</h2>
+    <p style="font-size: 1.1rem;">"Qual o seu principal compromisso para aplicar o que aprendemos aqui no seu dia a dia a partir de amanhã?"</p>
+    <br>
+    <p style="font-size: 1.1rem;"><strong>"A excelência não é um ato, mas um hábito. E essa jornada nós construímos juntos, todos os dias."</strong></p>
+    <div style="display: flex; align-items: center; justify-content: center; gap: 40px; margin-top: 40px; flex-wrap: wrap;">
+        <img src="eequipe-panorama.jpg" alt="Toda a equipe Panorama reunida e sorrindo" class="team-photo" style="max-width: 350px; max-height: 300px;">
+        <span style="font-size: 2.5rem; font-family: 'Playfair Display', serif; color: #facc15; font-weight: bold; text-shadow: 1px 1px 8px #00000080;">Obrigado!!</span>
+    </div>
+    <p style="font-size: 1.1rem; margin-top: 32px;">Link para os Manuais: <a href="https://vasconsultoria.github.io/manual-panorama/" target="_blank">https://vasconsultoria.github.io/manual-panorama/</a></p>
+</div>
+
+            <!-- ################################################################# -->
+
+        </div>
+
+        <div class="nav-buttons">
+            <button id="prevBtn">Anterior</button>
+            <button id="nextBtn">Próximo</button>
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slides-wrapper .slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        let currentSlide = 0;
+
+        function showSlide(n) {
+            if (slides.length > 0) {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (n + slides.length) % slides.length;
+                slides[currentSlide].classList.add('active');
+                prevBtn.disabled = currentSlide === 0;
+                nextBtn.disabled = currentSlide === slides.length - 1;
+            }
+        }
+
+        nextBtn.addEventListener('click', () => {
+            if (currentSlide < slides.length - 1) {
+                showSlide(currentSlide + 1);
+            }
+        });
+        prevBtn.addEventListener('click', () => {
+            if (currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        });
+        
+        document.addEventListener("DOMContentLoaded", () => {
+            showSlide(0);
+        });
+
+        function toggleAccordion(headerElement) {
+            const item = headerElement.parentElement;
+            const content = item.querySelector('.pillar-content');
+            const isAlreadyActive = item.classList.contains('active');
+
+            item.parentElement.querySelectorAll('.pillar-item').forEach(otherItem => {
+                if (otherItem !== item) {
+                    otherItem.classList.remove('active');
+                    otherItem.querySelector('.pillar-content').style.maxHeight = null;
+                }
+            });
+
+            if (!isAlreadyActive) {
+                item.classList.add('active');
+                content.style.maxHeight = content.scrollHeight + 'px';
+            } else {
+                item.classList.remove('active');
+                content.style.maxHeight = null;
+            }
+        }
+    </script>
+</body>
+</html>
