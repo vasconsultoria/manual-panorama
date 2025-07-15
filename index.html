@@ -42,11 +42,11 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            min-height: 100vh; /* Alterado para min-height para acomodar o novo botão */
+            min-height: 100vh;
             background: linear-gradient(135deg, var(--cor-verde-panorama), var(--cor-verde-escuro));
             color: var(--cor-branco);
             text-align: center;
-            padding: 40px 20px; /* Aumentado o padding vertical */
+            padding: 40px 20px;
             animation: fadeIn 0.8s ease-in-out;
             box-sizing: border-box;
         }
@@ -104,9 +104,6 @@
             font-size: 1.5rem;
         }
 
-        /* ###################################################### */
-        /* ## NOVO ESTILO PARA O BOTÃO DO WORKSHOP ADICIONADO AQUI ## */
-        /* ###################################################### */
         .btn-workshop {
             background-color: var(--cor-amarelo-panorama);
             color: var(--cor-verde-escuro);
@@ -117,7 +114,7 @@
             font-size: 1.1rem;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            margin-top: 50px; /* Espaçamento superior */
+            margin-top: 50px;
             display: inline-block;
             border: 2px solid transparent;
         }
@@ -128,11 +125,10 @@
             background-color: var(--cor-branco);
             color: var(--cor-verde-escuro);
         }
-        /* ###################################################### */
 
         .content-section {
             padding: 60px 20px;
-            display: none; /* Manuais ocultos por padrão */
+            display: none;
             animation: fadeIn 0.8s ease-in-out;
             background-color: var(--cor-fundo);
         }
@@ -294,13 +290,105 @@
             transform: translateY(-3px);
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
-        
+
+        /* Estilos para o pop-up customizado */
+        .password-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .modal-content {
+            background-color: var(--cor-branco);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .modal-content h3 {
+            margin-top: 0;
+            color: var(--cor-verde-escuro);
+            font-size: 1.5rem;
+        }
+
+        .modal-content input[type="password"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 20px 0;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            transition: border-color 0.3s;
+        }
+
+        .modal-content input[type="password"]:focus {
+            outline: none;
+            border-color: var(--cor-verde-panorama);
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .modal-buttons button {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-confirm {
+            background-color: var(--cor-verde-panorama);
+            color: var(--cor-branco);
+        }
+
+        .btn-confirm:hover {
+            background-color: var(--cor-amarelo-panorama);
+            color: var(--cor-verde-escuro);
+        }
+
+        .btn-cancel {
+            background-color: #e9ecef;
+            color: #6c757d;
+        }
+
+        .btn-cancel:hover {
+            background-color: #ced4da;
+        }
     </style>
 </head>
 <body>
 
+    <div id="passwordModal" class="password-modal">
+        <div class="modal-content">
+            <h3>Acesso Restrito</h3>
+            <p>Por favor, insira a senha para continuar:</p>
+            <input type="password" id="passwordInput" placeholder="Senha">
+            <div class="modal-buttons">
+                <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+                <button class="btn-confirm" onclick="checkPassword()">Acessar</button>
+            </div>
+        </div>
+    </div>
+
     <main class="landing-page" id="home">
-        <img src="Panorama-LOGO.png" alt="Logo Panorama Rent a Car">
+        <img src="logo-panorama-locadora1.jpg" alt="Logo Panorama Rent a Car">
         <h1>Manual de Procedimentos Operacionais Panorama</h1>
         <p>Este material foi criado para facilitar a rotina operacional e unificar os padrões de excelência dos profissionais que compõem a equipe Panorama Rent a Car.</p>
         <nav class="navigation-grid">
@@ -308,6 +396,8 @@
             <div onclick="requestPassword('agente-locacao')" class="nav-card"><h2>Agente de Locação</h2></div>
             <div onclick="requestPassword('assistente-financeiro')" class="nav-card"><h2>Assistente Financeiro</h2></div>
             <div onclick="requestPassword('agente-servico')" class="nav-card"><h2>Agente de Serviço</h2></div>
+            <div onclick="requestPassword('motorista')" class="nav-card"><h2>Motorista de Locadora</h2></div>
+            <div onclick="requestPassword('assistente-marketing')" class="nav-card"><h2>Assistente de Marketing</h2></div>
         </nav>
 
         <a href="workshop.html" class="btn-workshop">Acessar Workshop de Integração</a>
@@ -751,79 +841,405 @@
         </div>
     </section>
 
+    <section id="motorista" class="content-section gray-bg">
+        <div class="container">
+            <h1 class="titulo-secao">Manual do Motorista de Locadora</h1>
+            <div class="flowchart">
+                <div class="phase">
+                    <div class="phase-header" onclick="toggleDetails(this)">
+                        <h3><span class="icon">🗓️</span>Fase 1: Início do Expediente e Planejamento de Rotas</h3>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="details">
+                        <div class="details-content">
+                            <p class="objetivo">Garantir que o motorista esteja preparado para as demandas do dia, com foco na organização e apresentação pessoal.</p>
+                            <ul>
+                                <li><strong>Preparação Pessoal:</strong> Chegar ao local de trabalho com antecedência para garantir que o uniforme esteja limpo, passado e que a apresentação pessoal esteja impecável (cabelo penteado, barba feita/aparada, higiene pessoal). Lembre-se, você representa a Panorama Rent a Car.</li>
+                                <li><strong>Verificação da Agenda:</strong> Consultar a agenda de serviços do dia (disponibilizada pelo Agente de Locação ou Supervisor) para entender as demandas de entregas, coletas e transferências de veículos.</li>
+                                <li><strong>Planejamento de Rotas:</strong> Otimizar as rotas utilizando ferramentas de navegação (ex: Google Maps, Waze) para garantir a eficiência no tempo e no consumo de combustível, evitando atrasos. Considerar o trânsito e condições climáticas.</li>
+                                <li><strong>Conferência de Documentação:</strong> Assegurar que possui todos os documentos necessários para as viagens (CNH válida, documentos dos veículos a serem transportados, comprovantes de entrega/coleta).</li>
+                                <li><strong>Checagem Pré-Uso do Veículo de Apoio:</strong> Se utilizar um veículo de apoio da empresa, realizar uma inspeção rápida dos itens básicos (nível de combustível, pneus, luzes, limpeza interna e externa) antes de iniciar as atividades. Reportar qualquer anomalia ao Supervisor ou Agente de Serviço.</li>
+                                <li><strong>Uso Interno:</strong> Toda utilização feita com uso de veículos operacionais, deverá cobrar da operação a abertura do Uso Interno, informando a utilização do veiculo e o tempo estimado para devolução.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="phase">
+                    <div class="phase-header" onclick="toggleDetails(this)">
+                        <h3><span class="icon">🚚</span>Fase 2: Entrega de Veículo ao Cliente</h3>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="details">
+                        <div class="details-content">
+                            <p class="objetivo">Procedimento detalhado para a entrega de veículos, focando na segurança, cordialidade e conformidade com os processos.</p>
+                            <div class="sub-processo">
+                                <h4><span class="icon">🔧</span>Preparação do Veículo para Entrega</h4>
+                                <ul>
+                                    <li><strong>Limpeza e Higienização:</strong> Garantir que o veículo esteja limpo (interna e externamente) e higienizado antes da saída para entrega.</li>
+                                    <li><strong>Nível de Combustível:</strong> Verificar e assegurar que o nível de combustível esteja conforme o padrão da empresa (tanque cheio).</li>
+                                    <li><strong>Documentação do Veículo:</strong> Conferir se todos os documentos do veículo (CRLV, manual) e a cópia do contrato de locação estão presentes e organizados no porta-luvas.</li>
+                                    <li><strong>Itens de Segurança:</strong> Verificar a presença de triângulo, chave roda e estepe, entre outros.</li>
+                                    <li><strong>Funcionamento Geral:</strong> Realizar um teste rápido de luzes, pneus, freios e ar condicionado. Reportar qualquer irregularidade ao Agente de Serviço antes de sair.</li>
+                                </ul>
+                            </div>
+                             <div class="sub-processo">
+                                <h4><span class="icon">📱</span>Checklist de Saída (Aplicativo VEX)</h4>
+                                <ul>
+                                    <li><strong>Início do Checklist:</strong> Abrir o aplicativo VEX e iniciar o checklist de entrega, digitando a placa do veículo.</li>
+                                    <li><strong>Preenchimento de Dados:</strong> Inserir a quilometragem atual, nível de combustível e classificação dos pneus.</li>
+                                    <li><strong>Registro Fotográfico:</strong> Tirar fotos claras e bem iluminadas de todas as partes obrigatórias do veículo (frente, traseira, laterais, para-brisa, interior, painel) e de qualquer avaria preexistente, seguindo as orientações do aplicativo. Certificar-se de que as fotos estão focadas e com boa resolução.</li>
+                                    <li><strong>Assinatura do Funcionário:</strong> Realizar sua assinatura digital no aplicativo como responsável pela vistoria de saída.</li>
+                                    <li><strong>Validação e Envio:</strong> Conferir todas as informações e fotos antes de finalizar e enviar o checklist no VEX.</li>
+                                </ul>
+                            </div>
+                            <div class="sub-processo">
+                                <h4><span class="icon">🤝</span>Entrega ao Cliente</h4>
+                                <ul>
+                                    <li><strong>Condução Segura:</strong> Dirigir de forma defensiva, respeitando as leis de trânsito e os limites de velocidade. Evitar manobras bruscas.</li>
+                                    <li><strong>Comunicação com o Cliente:</strong> Manter o Agente de Locação informado sobre o progresso da entrega e, se houver atrasos imprevistos, solicitar que o cliente seja avisado.</li>
+                                    <li><strong>Apresentação:</strong> Ao chegar ao local, apresente-se ao cliente com cordialidade, utilizando seu nome e informando que é da Panorama Rent a Car.</li>
+                                    <li><strong>Acompanhamento do Checklist:</strong> Acompanhar o cliente durante a revisão do veículo, apontando as condições registradas no checklist e quaisquer avarias preexistentes.</li>
+                                    <li><strong>Orientações Básicas:</strong> Fornecer orientações rápidas sobre o funcionamento básico do veículo (tipo de combustível, abertura de porta-malas, etc.) se o cliente solicitar.</li>
+                                    <li><strong>Coleta de Assinatura do Cliente:</strong> Garantir que o cliente assine o checklist no aplicativo VEX confirmando o recebimento do veículo e sua condição.</li>
+                                    <li><strong>Despedida:</strong> Agradecer ao cliente pela preferência e desejar uma boa experiência.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="phase">
+                    <div class="phase-header" onclick="toggleDetails(this)">
+                        <h3><span class="icon">📥</span>Fase 3: Coleta de Veículo do Cliente (Devolução)</h3>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="details">
+                        <div class="details-content">
+                            <p class="objetivo">Procedimento para a coleta de veículos, com foco na inspeção rigorosa, registro de avarias e comunicação eficaz.</p>
+                             <div class="sub-processo">
+                                <h4><span class="icon">📍</span>Deslocamento e Recepção</h4>
+                                <ul>
+                                    <li><strong>Condução Segura:</strong> Dirigir de forma defensiva, respeitando as leis de trânsito e os limites de velocidade.</li>
+                                    <li><strong>Confirmação de Horário:</strong> Se aplicável, confirmar o horário de coleta com o Agente de Locação ou diretamente com o cliente.</li>
+                                    <li><strong>Recepção do Veículo:</strong> Apresente-se com cordialidade, informando que está ali para a coleta do veículo. Verifique a identidade do cliente para assegurar a correta devolução.</li>
+                                </ul>
+                            </div>
+                            <div class="sub-processo">
+                                <h4><span class="icon">📝</span>Checklist de Devolução (Aplicativo VEX)</h4>
+                                <ul>
+                                    <li><strong>Início do Checklist:</strong> Abrir o aplicativo VEX e iniciar o checklist de devolução, digitando a placa do veículo.</li>
+                                    <li><strong>Preenchimento de Dados:</strong> Inserir a quilometragem atual, nível de combustível e classificação dos pneus.</li>
+                                    <li><strong>Vistoria Detalhada:</strong> Realizar uma inspeção minuciosa de todo o veículo em companhia do cliente. Atenção especial para: Avarias: Procurar por novos riscos, amassados, quebras ou qualquer dano que não estava presente no checklist de entrega. Limpeza: Verificar a limpeza interna e externa. Itens Internos: Conferir se todos os itens (tapetes, rádio, porta-objetos) estão intactos. Nível de Combustível: Comparar o nível de combustível com o registrado no momento da entrega.</li>
+                                    <li><strong>Registro Fotográfico de Avarias:</strong> CRÍTICO: Caso identifique qualquer avaria nova, sujeira excessiva ou nível de combustível abaixo do padrão, tirar fotos detalhadas e claras no aplicativo VEX, certificando-se de que a avaria está visível e inquestionável.</li>
+                                    <li><strong>Notificação ao Cliente:</strong> Informar o cliente imediatamente sobre qualquer irregularidade encontrada durante a vistoria e registrar sua ciência ou contestação no aplicativo.</li>
+                                    <li><strong>Assinatura do Funcionário:</strong> Realizar sua assinatura digital no aplicativo como responsável pela vistoria de devolução.</li>
+                                    <li><strong>Coleta de Assinatura do Cliente:</strong> OBRIGATÓRIO: Obter a assinatura do cliente no aplicativo VEX, confirmando a devolução e a ciência das condições do veículo, incluindo eventuais avarias ou pendências.</li>
+                                    <li><strong>Validação e Envio:</strong> Conferir todas as informações e fotos antes de finalizar e enviar o checklist no VEX.</li>
+                                </ul>
+                            </div>
+                            <div class="sub-processo">
+                                <h4><span class="icon">🔙</span>Retorno à Locadora</h4>
+                                <ul>
+                                    <li><strong>Condução Segura:</strong> Dirigir o veículo devolvido de forma segura e responsável.</li>
+                                    <li><strong>Reporte Imediato:</strong> Ao retornar à base, reportar imediatamente ao Agente de Locação ou Supervisor sobre a devolução, especialmente se houverem avarias, pendências de combustível ou limpeza.</li>
+                                    <li><strong>Estacionamento:</strong> Estacionar o veículo na área designada para lavagem ou manutenção, conforme orientação.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="phase">
+                    <div class="phase-header" onclick="toggleDetails(this)">
+                        <h3><span class="icon">🛠️</span>Fase 4: Condução para Manutenção e Retirada</h3>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="details">
+                        <div class="details-content">
+                            <p class="objetivo">Processo de transporte de veículos para serviços de manutenção e retorno à base.</p>
+                            <ul>
+                                <li><strong>Recebimento da Ordem de Serviço (OS):</strong> Receber do Agente de Serviço a Ordem de Serviço (OS) com os detalhes do veículo a ser levado para manutenção e o endereço da oficina/concessionária.</li>
+                                <li><strong>Checklist de Saída para Manutenção:</strong> Antes de sair, realizar uma inspeção visual rápida do veículo, anotando a quilometragem e o nível de combustível. Tirar fotos gerais do veículo no aplicativo VEX, registrando sua condição antes de ser levado à manutenção.</li>
+                                <li><strong>Condução para o Local de Serviço:</strong> Conduzir o veículo de forma segura e defensiva até a oficina/concessionária. Informar ao Agente de Serviço quando o veículo for entregue no local.</li>
+                                <li><strong>Entrega na Oficina:</strong> Auxiliar no preenchimento de formulários de entrada na oficina, se necessário, garantindo que a OS seja anexada. Confirmar com o responsável da oficina qual serviço será executado.</li>
+                                <li><strong>Retirada do Veículo da Manutenção:</strong> Receber do Agente de Serviço a ordem para retirar um veículo da manutenção. Realizar uma inspeção visual no veículo na oficina para verificar se o serviço foi realizado conforme o esperado e se não há novas avarias. Reportar qualquer anomalia ao Agente de Serviço antes de sair. Conferir se os documentos do veículo e a nota de serviço/OS da oficina estão corretos.</li>
+                                <li><strong>Checklist de Retorno:</strong> Realizar um novo checklist no aplicativo VEX, registrando a quilometragem de saída da oficina e tirando fotos do veículo.</li>
+                                <li><strong>Retorno à Locadora:</strong> Conduzir o veículo de volta à base com segurança. Entregar o veículo e a documentação da oficina ao Agente de Serviço, reportando o status da manutenção.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="phase">
+                    <div class="phase-header" onclick="toggleDetails(this)">
+                        <h3><span class="icon">📋</span>Fase 5: Responsabilidades Adicionais e Fim do Expediente</h3>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="details">
+                        <div class="details-content">
+                            <p class="objetivo">Cobrir responsabilidades diárias além da condução, bem como o processo de encerramento do dia.</p>
+                            <ul>
+                                <li><strong>Limpeza e Organização:</strong> Manter o veículo de apoio da empresa sempre limpo e organizado, tanto interna quanto externamente.</li>
+                                <li><strong>Abastecimento:</strong> Realizar o abastecimento dos veículos (de apoio ou locação) conforme necessidade, seguindo as políticas da empresa para registro e comprovação de despesas.</li>
+                                <li><strong>Apoio à Operação:</strong> Em períodos de menor demanda por entregas/coletas, estar disponível para apoiar o Agente de Serviço em tarefas como organização do pátio, calibragem de pneus dos veículos em estoque, ou auxílio na lavagem.</li>
+                                <li><strong>Comunicação de Ocorrências:</strong> Reportar imediatamente ao Supervisor ou Agente de Locação qualquer incidente, acidente ou situação inesperada que ocorra durante o dia, por menor que seja.</li>
+                                <li><strong>Manutenção Preventiva Básica:</strong> Observar e reportar ao Agente de Serviço qualquer sinal de necessidade de manutenção nos veículos (ex: luzes acesas no painel, ruídos estranhos, falhas no funcionamento).</li>
+                                <li><strong>Organização da Documentação:</strong> Entregar todos os checklists preenchidos no VEX, comprovantes de abastecimento e demais documentos ao Agente de Locação ou Supervisor ao final do dia.</li>
+                                <li><strong>Desligamento de Veículos:</strong> Ao estacionar os veículos, certificar-se de que estão devidamente trancados, com vidros fechados e equipamentos desligados.</li>
+                                <li><strong>Encerramento de Expediente:</strong> Informar o Supervisor sobre a conclusão das tarefas do dia e qualquer pendência para o próximo turno.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="retornar-container">
+                <div onclick="showHome()" class="btn-retornar">▲ Voltar ao Início</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="assistente-marketing" class="content-section">
+        <div class="container">
+            <h1 class="titulo-secao">Manual do Assistente de Marketing</h1>
+            <div class="flowchart">
+                <div class="phase">
+                    <div class="phase-header" onclick="toggleDetails(this)">
+                        <h3><span class="icon">📊</span>Fase 1: Análise e Planejamento de Conteúdo</h3>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="details">
+                        <div class="details-content">
+                            <p class="objetivo">Garantir que as atividades de marketing comecem com uma análise de desempenho e planejamento estratégico de conteúdo para o dia e próximos dias.</p>
+                            <div class="sub-processo">
+                                <h4><span class="icon">📈</span>Revisão de Desempenho Diário</h4>
+                                <ul>
+                                    <li><strong>Análise de Métricas de Redes Sociais:</strong> Acessar as plataformas (Facebook, Instagram, LinkedIn, Google Meu Negócio) e ferramentas de análise (ex: Meta Business Suite, Google Analytics) para verificar o desempenho das publicações do dia anterior (engajamento, alcance, cliques).</li>
+                                    <li><strong>Monitoramento de Leads (WhatsApp):</strong> Consultar o Agente de Locação sobre a qualidade e quantidade dos leads gerados via WhatsApp nos últimos dias, buscando identificar tendências e oportunidades de otimização das campanhas.</li>
+                                    <li><strong>Acompanhamento de Tráfego do Site:</strong> Verificar no Google Analytics o número de visitantes, páginas mais acessadas e taxa de conversão do site para identificar pontos de melhoria ou sucesso.</li>
+                                </ul>
+                            </div>
+                            <div class="sub-processo">
+                                <h4><span class="icon">✍️</span>Planejamento de Conteúdo</h4>
+                                <ul>
+                                    <li><strong>Briefing com o Supervisor/Comercial:</strong> Realizar um alinhamento rápido com o Supervisor ou equipe Comercial para entender as prioridades de vendas, promoções ativas ou veículos específicos que precisam de maior destaque no dia.</li>
+                                    <li><strong>Definição de Temas e Formatos:</strong> Com base na análise e no briefing, definir os temas dos conteúdos a serem criados (posts, stories, reels, artigos) e os formatos mais adequados para cada plataforma. Considerar datas comemorativas e eventos locais.</li>
+                                    <li><strong>Pesquisa de Tendências:</strong> Pesquisar novas tendências de conteúdo, hashtags em alta e formatos virais nas redes sociais para aplicar nas estratégias da Panorama.</li>
+                                    <li><strong>Organização de Ferramentas:</strong> Abrir e organizar todas as ferramentas de trabalho (software de edição de imagem/vídeo, plataforma de agendamento de posts, planilhas de controle).</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="phase">
+                    <div class="phase-header" onclick="toggleDetails(this)">
+                        <h3><span class="icon">🎨</span>Fase 2: Criação e Produção de Materiais de Marketing</h3>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="details">
+                        <div class="details-content">
+                            <p class="objetivo">Execução das tarefas de criação de conteúdo, garantindo a identidade visual da marca e a comunicação correta.</p>
+                            <div class="sub-processo">
+                                <h4><span class="icon">🖼️</span>Criação de Conteúdo Visual</h4>
+                                <ul>
+                                    <li><strong>Design de Imagens/Posts:</strong> Desenvolver artes para posts estáticos, stories e anúncios, utilizando ferramentas de design (ex: Canva, Adobe Spark). Assegurar que a identidade visual da Panorama (cores, logo, tipografia) seja rigorosamente seguida.</li>
+                                    <li><strong>Edição de Vídeos Curtos (Reels/Stories):</strong> Editar vídeos curtos e dinâmicos para Reels e Stories, incluindo trilha sonora, legendas e chamadas para ação. Buscar formatos que gerem alto engajamento.</li>
+                                    <li><strong>Fotografia/Filmagens (quando necessário):</strong> Realizar fotos ou pequenas filmagens de veículos, da equipe ou do ambiente da locadora para uso nos conteúdos, garantindo boa iluminação e composição.</li>
+                                </ul>
+                            </div>
+                            <div class="sub-processo">
+                                <h4><span class="icon">📝</span>Redação de Textos e Roteiros</h4>
+                                <ul>
+                                    <li><strong>Copywriting para Posts:</strong> Escrever legendas persuasivas e informativas para as publicações, utilizando chamadas para ação (CTAs) claras e relevantes.</li>
+                                    <li><strong>Roteiros para Vídeos:</strong> Desenvolver roteiros simples e objetivos para os vídeos, destacando os pontos-chave da mensagem.</li>
+                                    <li><strong>Revisão de Conteúdo:</strong> Revisar todo o texto e material visual para garantir a ausência de erros gramaticais, ortográficos ou de informação.</li>
+                                </ul>
+                            </div>
+                             <div class="sub-processo">
+                                <h4><span class="icon">🔍</span>Otimização para SEO</h4>
+                                <ul>
+                                    <li><strong>Pesquisa de Palavras-chave:</strong> Realizar pesquisa de palavras-chave relevantes para o setor de locação de veículos e para os serviços oferecidos pela Panorama.</li>
+                                    <li><strong>Otimização de Textos e Títulos:</strong> Aplicar as palavras-chave nos textos do site, e nas descrições do Google Meu Negócio para melhorar o ranqueamento.</li>
+                                    <li><strong>Otimização de Imagens:</strong> Renomear e adicionar tags (alt text) às imagens com palavras-chave relevantes.</li>
+                                </ul>
+                            </div>
+                            <ul>
+                                <li><strong>Desenvolvimento de E-mail Marketing:</strong> Criar layouts e conteúdos para campanhas de e-mail marketing, como promoções, newsletters ou comunicação com clientes corporativos.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="phase">
+                    <div class="phase-header" onclick="toggleDetails(this)">
+                        <h3><span class="icon">📢</span>Fase 3: Publicação e Gestão de Mídias Sociais/Anúncios</h3>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="details">
+                        <div class="details-content">
+                            <p class="objetivo">Gerenciar a veiculação do conteúdo e a interação com o público, garantindo a visibilidade e o engajamento.</p>
+                            <div class="sub-processo">
+                                <h4><span class="icon">⏰</span>Agendamento de Publicações</h4>
+                                <ul>
+                                    <li><strong>Utilização de Ferramentas de Agendamento:</strong> Agendar os posts e stories nas plataformas apropriadas (Meta Business Suite, mLabs, etc.) para garantir a consistência das publicações.</li>
+                                    <li><strong>Ajustes de Horário:</strong> Otimizar os horários de publicação com base nas métricas de engajamento da audiência.</li>
+                                </ul>
+                            </div>
+                            <div class="sub-processo">
+                                <h4><span class="icon">🗣️</span>Interação com a Audiência</h4>
+                                <ul>
+                                    <li><strong>Respostas a Comentários e Mensagens:</strong> Responder de forma cordial e eficiente a todos os comentários, mensagens diretas e avaliações nas redes sociais e Google Meu Negócio. Encaminhar para o setor responsável se necessário (ex: dúvidas sobre reservas para o Agente de Locação).</li>
+                                    <li><strong>Monitoramento de Menções:</strong> Ficar atento a menções da marca Panorama em outras páginas ou perfis e interagir quando apropriado.</li>
+                                </ul>
+                            </div>
+                             <div class="sub-processo">
+                                <h4><span class="icon">💸</span>Gestão de Tráfego Pago (Ads)</h4>
+                                <ul>
+                                    <li><strong>Criação e Otimização de Campanhas:</strong> Criar e otimizar campanhas de tráfego pago (Facebook Ads, Instagram Ads, Google Ads) com foco em geração de leads e visibilidade, segmentando o público-alvo de forma a obter resultado.</li>
+                                    <li><strong>Monitoramento de Orçamento:</strong> Acompanhar o orçamento das campanhas para garantir que o investimento esteja sendo otimizado e que não haja gastos excessivos.</li>
+                                    <li><strong>Testes A/B:</strong> Realizar testes A/B com diferentes criativos, textos e públicos para identificar o que gera melhor desempenho.</li>
+                                </ul>
+                            </div>
+                            <ul>
+                                <li><strong>Atualização do Google Meu Negócio:</strong> Manter as informações do perfil da empresa no Google Meu Negócio sempre atualizadas (horário de funcionamento, fotos, promoções, respostas a avaliações).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="phase">
+                    <div class="phase-header" onclick="toggleDetails(this)">
+                        <h3><span class="icon">📈</span>Fase 4: Análise de Resultados e Relatórios</h3>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="details">
+                        <div class="details-content">
+                            <p class="objetivo">Compilar dados e gerar relatórios para avaliar o desempenho das estratégias e subsidiar futuras decisões.</p>
+                            <div class="sub-processo">
+                                <h4><span class="icon">📊</span>Compilação de Dados</h4>
+                                <ul>
+                                    <li><strong>Coleta Mensal de Métricas:</strong> Mensalmente, coletar todas as métricas de desempenho das redes sociais, tráfego do site e campanhas de anúncios (alcance, impressões, engajamento, cliques, leads, conversões, custo por resultado).</li>
+                                    <li><strong>Dados de Leads/Vendas:</strong> Cruza os dados de marketing com os resultados de vendas (fornecidos pelo Supervisor) para entender o impacto das ações de marketing na geração de negócios.</li>
+                                </ul>
+                            </div>
+                            <div class="sub-processo">
+                                <h4><span class="icon">📝</span>Elaboração de Relatórios de Desempenho</h4>
+                                <ul>
+                                    <li><strong>Relatório Mensal de Marketing:</strong> Preparar um relatório mensal detalhado com os resultados das campanhas, destacando os sucessos, desafios e aprendizados. Utilizar gráficos e dados claros para facilitar a compreensão.</li>
+                                    <li><strong>Reunião de Apresentação:</strong> Apresentar o relatório ao Supervisor ou Diretoria, discutindo os resultados e propondo planos de ação para o próximo período.</li>
+                                </ul>
+                            </div>
+                            <ul>
+                                <li><strong>Análise SWOT do Marketing:</strong> Periodicamente, realizar uma análise SWOT (Forças, Fraquezas, Oportunidades, Ameaças) das estratégias de marketing para identificar pontos a serem melhorados e novas oportunidades de crescimento.</li>
+                                <li><strong>Pesquisa de Mercado e Concorrência:</strong> Manter-se atualizado sobre as estratégias de marketing da concorrência e as tendências do mercado de locação de veículos para identificar diferenciais e inovações.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="phase">
+                    <div class="phase-header" onclick="toggleDetails(this)">
+                        <h3><span class="icon">💡</span>Fase 5: Desenvolvimento Profissional e Inovação</h3>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="details">
+                        <div class="details-content">
+                            <p class="objetivo">Fomentar a constante atualização e busca por novas ideias e tecnologias para o marketing da empresa.</p>
+                            <ul>
+                                <li><strong>Acompanhamento de Novidades do Mercado:</strong> Buscar ativamente cursos, webinars e workshops online ou presenciais sobre marketing digital, design, copywriting, SEO e ferramentas da área (deixamos de forma opcional, mas é importante). Ler regularmente artigos, blogs e newsletters de referência no setor de marketing digital (deixamos de forma opcional, mas é importante).</li>
+                                <li><strong>Proposição de Novas Estratégias:</strong> Apresentar proativamente novas ideias e estratégias de marketing ao Supervisor ou Diretoria, baseadas nas tendências do mercado e nos objetivos da empresa.</li>
+                                <li><strong>Testes de Novas Ferramentas:</strong> Pesquisar e testar novas ferramentas de marketing que possam otimizar processos, melhorar a análise de dados ou a criação de conteúdo.</li>
+                                <li><strong>Avaliação de Mercado Contínua:</strong> Realizar avaliação de mercado com outras empresas do setor para identificar boas práticas e oportunidades de inovação.</li>
+                                <li><strong>Colaboração Interdepartamental:</strong> Manter uma comunicação fluida com todos os departamentos da empresa para entender suas necessidades e como o marketing pode apoiá-los (ex: promoções de vendas, eventos internos, comunicação de RH).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="retornar-container">
+                <div onclick="showHome()" class="btn-retornar">▲ Voltar ao Início</div>
+            </div>
+        </div>
+    </section>
+
     <script>
         const homePage = document.getElementById('home');
         const contentSections = document.querySelectorAll('.content-section');
+        const passwordModal = document.getElementById('passwordModal');
+        const passwordInput = document.getElementById('passwordInput');
+        let currentManualId = null;
 
-        // Objeto com as senhas para cada módulo
         const passwords = {
             'supervisor': 'supervisor@p-2025',
             'agente-locacao': 'agente!p-2025',
             'assistente-financeiro': 'financeiro#p-2025',
-            'agente-servico': 'agente&p-2025'
+            'agente-servico': 'agente&p-2025',
+            'motorista': 'motorista@p-2025',
+            'assistente-marketing': 'marketing$p-2025'
         };
 
         function requestPassword(manualId) {
-            const password = prompt(`Para acessar o módulo, por favor, insira a senha:`);
-            
-            // Se o usuário clicar em "cancelar", a senha será null
-            if (password === null) {
-                return; 
-            }
+            currentManualId = manualId;
+            passwordModal.style.display = 'flex';
+            passwordInput.focus();
+        }
 
-            if (passwords[manualId] && password === passwords[manualId]) {
-                showManual(manualId);
+        function checkPassword() {
+            const enteredPassword = passwordInput.value;
+            if (passwords[currentManualId] && enteredPassword === passwords[currentManualId]) {
+                showManual(currentManualId);
+                closeModal();
             } else {
                 alert('Senha incorreta. Acesso negado.');
+                passwordInput.value = '';
+                passwordInput.focus();
             }
         }
 
+        function closeModal() {
+            passwordModal.style.display = 'none';
+            passwordInput.value = '';
+            currentManualId = null;
+        }
+
         function showManual(manualId) {
-            // Esconde a página inicial
             homePage.style.display = 'none';
 
-            // Esconde todas as seções de conteúdo
             contentSections.forEach(section => {
                 section.style.display = 'none';
             });
 
-            // Mostra a seção de conteúdo específica
             const manualToShow = document.getElementById(manualId);
             if (manualToShow) {
                 manualToShow.style.display = 'block';
-                window.scrollTo(0, 0); // Rola para o topo da página
+                window.scrollTo(0, 0);
             }
         }
 
         function showHome() {
-            // Esconde todas as seções de conteúdo
             contentSections.forEach(section => {
                 section.style.display = 'none';
             });
 
-            // Mostra a página inicial
             homePage.style.display = 'flex';
-            window.scrollTo(0, 0); // Rola para o topo da página
+            window.scrollTo(0, 0);
         }
 
         function toggleDetails(headerElement) {
             const phase = headerElement.parentElement;
             const isAlreadyActive = phase.classList.contains('active');
 
-            // Fecha todos os outros cards no mesmo flowchart
             phase.parentElement.querySelectorAll('.phase').forEach(p => {
                 if (p !== phase) {
                     p.classList.remove('active');
                 }
             });
 
-            // Alterna o estado do card clicado
             if (!isAlreadyActive) {
                 phase.classList.add('active');
             } else {
                 phase.classList.remove('active');
             }
         }
+
+        passwordInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                checkPassword();
+            }
+        });
     </script>
 </body>
 </html>
